@@ -30,14 +30,15 @@ class Chef
         
         def initialize(new_resource, run_context)
           super
-           @init_command = "/sbin/service #{@new_resource.service_name}"
-           @new_resource.supports[:status] = true
+          @init_command = "/sbin/service #{@new_resource.service_name}"
          end
         
         def load_current_resource
           unless ::File.exists? "/sbin/chkconfig"
             raise Chef::Exceptions::Service, "/sbin/chkconfig does not exist!"
           end
+
+          @new_resource.supports[:status] = true
           
           super
           
