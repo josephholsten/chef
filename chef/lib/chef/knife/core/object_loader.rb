@@ -54,12 +54,15 @@ class Chef
           case filename
           when /\.(js|json)$/
             Chef::JSONCompat.from_json(IO.read(filename))
+          when /\.(yml|yaml)$/
+            require 'chef/yaml_compat'
+            Chef::YAMLCompat.from_yaml(IO.read(filename))
           when /\.rb$/
             r = klass.new
             r.from_file(filename)
             r
           else
-            ui.fatal("File must end in .js, .json, or .rb")
+            ui.fatal("File must end in .yml, .yaml, .js, .json, or .rb")
             exit 30
           end
         end
